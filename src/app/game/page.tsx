@@ -1,16 +1,26 @@
 "use client";
 import StartButton from "@/components/Button";
+import CountdownModal from "@/components/Countdown";
 import React, { useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
+  const [showCountdown, setShowCountdown] = useState<boolean>(false);
+
 
   const handleNewGame = () => {
-    if (isGameOngoing) {
-      setIsGameOnGoing(true);
-      console.log("New Game Started");
+    if (!isGameOngoing) {
+      setShowCountdown(true); // Show the countdown modal before starting the game
     }
   };
+
+  const handleCountdownFinish = () => {
+    setShowCountdown(false);
+    setIsGameOnGoing(true);
+    console.log("New Game Started");
+  };
+
+
   return (
     <div>
       <StartButton
@@ -35,6 +45,8 @@ const Game = () => {
           <div>game board placeholder</div>
         </div>
       </div>
+            {/* Show countdown modal if countdown is in progress */}
+            {showCountdown && <CountdownModal onCountdownFinish={handleCountdownFinish} />}
     </div>
   );
 };
