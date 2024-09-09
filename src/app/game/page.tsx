@@ -1,7 +1,29 @@
+
+"use client"
+import StartButton from "@/components/StartButton";
+import React, { useState } from "react";
+
 import React from "react";
 
-const page = () => {
+
+const Game = () => {
+  const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
+
+  const handleNewGame = () => {
+    if (isGameOngoing) {
+      setIsGameOnGoing(true);
+      console.log("New Game Started");
+    }
+  };
   return (
+
+    <div >
+      <StartButton
+        btnText="Start a New Game"
+        onClick={handleNewGame}
+        disabled={isGameOngoing}
+      />
+
     <div className="min-h-screen min-w-screen flex flex-col items-center">
       <div className="p-[20px 0px] flex min-w-full justify-around">
         <div className="game-timer">
@@ -17,8 +39,11 @@ const page = () => {
       <div className="game-board">
         <div>game board placeholder</div>
       </div>
+
     </div>
   );
 };
 
-export default page;
+
+export default Game;
+
