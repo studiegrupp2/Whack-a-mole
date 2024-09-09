@@ -1,5 +1,5 @@
 "use client";
-import StartButton from "@/components/StartButton";
+import StartButton from "@/components/Button";
 import React, { useState } from "react";
 
 const Game = () => {

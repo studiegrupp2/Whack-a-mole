@@ -1,7 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
 import React from "react";
-import StartButton from "./StartButton";
+import StartButton from "./Button";
 
 const StartPageButton = () => {
   const router = useRouter();
