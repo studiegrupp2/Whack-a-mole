@@ -1,10 +1,9 @@
 import React from "react";
-import styles from "./game-page.module.css";
 
 const page = () => {
   return (
-    <div className={styles.gameContainer}>
-      <div className={styles.gameTopDiv}>
+    <div className="game-container">
+      <div className="game-top-div">
         <div className="game-timer">
           <div>timer placeholder</div>
         </div>
