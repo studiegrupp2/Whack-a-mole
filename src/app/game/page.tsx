@@ -1,22 +1,34 @@
 "use client";
 import StartButton from "@/components/Button";
+import CountdownModal from "@/components/Countdown";
 import React, { useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
-  const [currentPoints, setCurrentPoints] = useState(0);
 
-  const handleNewGame = () => {
-    if (isGameOngoing) {
-      setIsGameOnGoing(true);
-      console.log("New Game Started");
-    }
-  };
+  const [currentPoints, setCurrentPoints] = useState(0);
+        
+  const [showCountdown, setShowCountdown] = useState<boolean>(false);
+
+
+
 
   //funktion för att öka poängen, kan användas i spellogiken när en mullvad träffas.
   const addPoint = () => {
     setCurrentPoints(currentPoints +1)
   }
+      
+  const handleNewGame = () => {
+    if (!isGameOngoing) {
+      setShowCountdown(true); // Show the countdown modal before starting the game
+    }
+  };
+  const handleCountdownFinish = () => {
+    setShowCountdown(false);
+    setIsGameOnGoing(true);
+    console.log("New Game Started");
+  };
+
   return (
     <div>
       <StartButton
@@ -43,6 +55,8 @@ const Game = () => {
           <div>game board placeholder</div>
         </div>
       </div>
+            {/* Show countdown modal if countdown is in progress */}
+            {showCountdown && <CountdownModal onCountdownFinish={handleCountdownFinish} />}
     </div>
   );
 };
