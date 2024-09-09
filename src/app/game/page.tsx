@@ -2,8 +2,8 @@ import React from "react";
 
 const page = () => {
   return (
-    <div className="game-container">
-      <div className="game-top-div">
+    <div className="min-h-screen min-w-screen flex flex-col items-center">
+      <div className="p-[20px 0px] flex min-w-full justify-around">
         <div className="game-timer">
           <div>timer placeholder</div>
         </div>
