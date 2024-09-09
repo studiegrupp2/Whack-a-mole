@@ -5,21 +5,29 @@ import React, { useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
+
+  const [currentPoints, setCurrentPoints] = useState(0);
+        
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
 
 
+
+
+  //funktion för att öka poängen, kan användas i spellogiken när en mullvad träffas.
+  const addPoint = () => {
+    setCurrentPoints(currentPoints +1)
+  }
+      
   const handleNewGame = () => {
     if (!isGameOngoing) {
       setShowCountdown(true); // Show the countdown modal before starting the game
     }
   };
-
   const handleCountdownFinish = () => {
     setShowCountdown(false);
     setIsGameOnGoing(true);
     console.log("New Game Started");
   };
-
 
   return (
     <div>
@@ -35,7 +43,9 @@ const Game = () => {
             <div>timer placeholder</div>
           </div>
           <div className="game-points">
-            <div>points placeholder</div>
+            <div>
+              {currentPoints} points
+            </div>
           </div>
           <div className="game-start">
             <div>start button placeholder</div>
