@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
+  const [currentPoints, setCurrentPoints] = useState(0);
 
   const handleNewGame = () => {
     if (isGameOngoing) {
@@ -11,6 +12,11 @@ const Game = () => {
       console.log("New Game Started");
     }
   };
+
+  //funktion för att öka poängen, kan användas i spellogiken när en mullvad träffas.
+  const addPoint = () => {
+    setCurrentPoints(currentPoints +1)
+  }
   return (
     <div>
       <StartButton
@@ -25,7 +31,9 @@ const Game = () => {
             <div>timer placeholder</div>
           </div>
           <div className="game-points">
-            <div>points placeholder</div>
+            <div>
+              {currentPoints} points
+            </div>
           </div>
           <div className="game-start">
             <div>start button placeholder</div>
