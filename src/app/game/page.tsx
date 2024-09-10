@@ -14,7 +14,6 @@ const Game = () => {
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
 
 
-
   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerName(event.target.value);
   }; 
@@ -37,7 +36,11 @@ const Game = () => {
 
   return (
     <div>
-      <Input value={playerName} onChange={handleOnChange}/>
+      <Input 
+      value={playerName} 
+      onChange={handleOnChange}
+      disabled={isGameOngoing}
+      />
       <StartButton
         btnText="Start a New Game"
         onClick={handleNewGame}

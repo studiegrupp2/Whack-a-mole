@@ -1,25 +1,5 @@
 "use client"
 import React, { useState } from 'react'
-
-// const Input1 = () => {
-
-//   const [playerName, setPlayerName] = useState<string>("")
-//   const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//         setPlayerName(event.target.value);
-//       };  
-    
-//   return (
-//     <div className='flex justify-center items-center  p-2'>
-//         <input className='text-center p-2 rounded-full border-slate-900 border-[2px]' placeholder='Input Player Name' onChange={(event) => handleOnChange(event)} ></input> 
-//     </div>
-//   )
-// }
-
-// export default Input1
-
-
-
-
 interface InputProps {
   onChange:(event: React.ChangeEvent<HTMLInputElement>) => void;
   value : string;
@@ -32,7 +12,9 @@ const Input: React.FC<InputProps> = ({
   return (
     <div className='flex justify-center items-center  p-2'>
         <input 
-        className='text-center p-2 rounded-full border-slate-900 border-[2px]'
+        className={`text-center p-2 rounded-full border-red-600 text-red-600 border-[2px] ${
+            disabled ? "opacity-50 cursor-not-allowed" : ""
+          } `}
         placeholder='Input Player Name'
         onChange={onChange}
         disabled={disabled}
