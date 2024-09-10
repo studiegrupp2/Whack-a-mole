@@ -1,7 +1,11 @@
 "use client";
 import StartButton from "@/components/Button";
 import CountdownModal from "@/components/Countdown";
+
 import Input from "@/components/Input";
+
+import Timer from "@/components/Timer";
+
 import React, { useState } from "react";
 
 const Game = () => {
@@ -27,6 +31,10 @@ const Game = () => {
     console.log("New Game Started");
   };
 
+  const handleGameTimerFinish = () => {
+    setIsGameOnGoing(false);
+  }
+
   return (
     <div>
       
@@ -38,7 +46,7 @@ const Game = () => {
       <div className="min-h-screen min-w-screen flex flex-col items-center">
         <div className="p-[20px 0px] flex min-w-full justify-around">
           <div className="game-timer">
-            <div>timer placeholder</div>
+            <Timer isGameOnGoing={isGameOngoing} handleFinish={handleGameTimerFinish} />
           </div>
           <div className="game-points">
             <div>
