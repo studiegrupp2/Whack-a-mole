@@ -1,17 +1,14 @@
 "use client";
 import React from "react";
 
-const pointsPlaceholder: number = 5;
-// Ta bort placeholdern när Mole-componenten är klar, tanken är att man får poängen från Mole beroende på hur länge den varit ute
-
 interface BoardProps {
-  moleHit: (points: number) => void;
+  moleHit: () => void;
   gameBoard: (null | "mole")[];
 }
 
 const Board: React.FC<BoardProps> = ({ moleHit, gameBoard }) => {
   const moleHitAddPoints = () => {
-    return moleHit(pointsPlaceholder);
+    return moleHit();
   };
 
   const handleOnClick = (type: string | null) => {

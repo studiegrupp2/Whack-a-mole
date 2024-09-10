@@ -19,8 +19,8 @@ const Game = () => {
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const addPoints = (points: number) => {
-    setCurrentPoints(currentPoints + points);
+  const addPoints = () => {
+    setCurrentPoints(currentPoints + 1);
     console.log(currentPoints);
   };
 
