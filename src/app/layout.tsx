@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-
 import "./globals.css";
+import EasterEggButton from "@/components/EasterEggButton";
+
+
+
+
+
+
+
 
 
 
@@ -14,12 +21,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
     <html lang="en">
       <body
         className={` antialiased`}
       >
         {children}
+        <EasterEggButton/>
       </body>
     </html>
   );

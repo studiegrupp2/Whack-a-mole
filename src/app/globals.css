@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+
+@keyframes jump {
+    0% {
+      transform: translateY(0);
+    }
+    30% {
+      transform: translateY(-40px);
+    }
+    50% {
+      transform: translateY(0px); 
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
+  .jumping {
+    animation: jump 1s ease-in-out infinite; 
+  }
