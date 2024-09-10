@@ -1,9 +1,12 @@
-import React from 'react'
+import React from "react";
+import Board from "../components/board";
 
 const page = () => {
   return (
-    <div>pagetest</div>
-  )
-}
+    <div>
+      <Board />
+    </div>
+  );
+};
 
-export default page
+export default page;
