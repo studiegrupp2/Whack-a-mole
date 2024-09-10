@@ -1,20 +1,3 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.game-board {
-    margin-left: 150px;
-    margin-top: 100px;
-    background-color: rgb(159, 142, 121);
-    /* remove above */
-}
-
-.board-cell {
-    width: 20%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-}
