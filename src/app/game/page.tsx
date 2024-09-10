@@ -7,8 +7,6 @@ import React, { useState } from "react";
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
 
-  
-
   const [currentPoints, setCurrentPoints] = useState(0);
         
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
