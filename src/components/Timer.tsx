@@ -14,12 +14,14 @@ const Timer: React.FC<TimerProps> = ({ isGameOnGoing, handleFinish }) => {
     }
     if (time === 0) {
       handleFinish();
+      setTime(60);
       return;
     }
+    
     const clock = setTimeout(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
-
+    
     return () => clearTimeout(clock);
   }, [time, isGameOnGoing]);
 
