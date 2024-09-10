@@ -17,7 +17,6 @@ const Input: React.FC<InputProps> = ({
           } `}
         placeholder='Input Player Name'
         onChange={onChange}
-        disabled={disabled}
         >
         </input> 
     </div>
