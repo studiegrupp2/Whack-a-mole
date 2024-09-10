@@ -1,10 +1,13 @@
 "use client";
 import StartButton from "@/components/Button";
 import CountdownModal from "@/components/Countdown";
+import Input from "@/components/Input";
 import React, { useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
+
+  const [playerName, setPlayerName] = useState<string>("")
 
   const [currentPoints, setCurrentPoints] = useState(0);
         
@@ -12,6 +15,9 @@ const Game = () => {
 
 
 
+  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerName(event.target.value);
+  }; 
 
   //funktion för att öka poängen, kan användas i spellogiken när en mullvad träffas.
   const addPoint = () => {
@@ -31,12 +37,12 @@ const Game = () => {
 
   return (
     <div>
+      <Input value={playerName} onChange={handleOnChange}/>
       <StartButton
         btnText="Start a New Game"
         onClick={handleNewGame}
         disabled={isGameOngoing}
       />
-
       <div className="min-h-screen min-w-screen flex flex-col items-center">
         <div className="p-[20px 0px] flex min-w-full justify-around">
           <div className="game-timer">
