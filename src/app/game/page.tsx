@@ -110,15 +110,15 @@ const Game = () => {
   return (
     <div>
       <div className="min-h-screen min-w-screen flex flex-col items-center">
-        <div className="p-[20px 0px] flex min-w-full justify-around">
+        <div className="p-[20px 0px] py-2 flex min-w-full justify-around">
           <div className="game-timer">
             <Timer
               isGameOnGoing={isGameOngoing}
               handleFinish={handleGameTimerFinish}
             />
           </div>
-          <div className="game-points">
-            <div>{currentPoints} points</div>
+          <div className="game-points text-4xl font-extrabold">
+            <div className="">{currentPoints} points</div>
           </div>
           <div className="game-start">
             <StartButton

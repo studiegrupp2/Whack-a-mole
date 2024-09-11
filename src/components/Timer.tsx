@@ -25,7 +25,7 @@ const Timer: React.FC<TimerProps> = ({ isGameOnGoing, handleFinish }) => {
     return () => clearTimeout(clock);
   }, [time, isGameOnGoing]);
 
-  return <div>{time}</div>;
+  return <div className="text-4xl font-extrabold">{time}</div>;
 };
 
 export default Timer;
