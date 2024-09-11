@@ -13,13 +13,11 @@ import React, { useEffect, useState } from "react";
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
 
-
   const [currentPoints, setCurrentPoints] = useState<number>(0);
 
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
 
   const addPoints = () => {
     setCurrentPoints(currentPoints + 1);
@@ -30,56 +28,54 @@ const Game = () => {
   boardPlaceHolder[1] = "mole";
   // byt ut ovan när mole-slumparen är mergad till main
 
-
   //spellogik:
 
-  type Board = (null | 'mole')[];
-  const [board, setBoard] = useState<Board>(new Array(25).fill(null))
+  type Board = (null | "mole")[];
+  const [board, setBoard] = useState<Board>(new Array(25).fill(null));
 
-  const randomMoles = (): number => Math.floor(Math.random()* 3) + 1;
+  const randomMoles = (): number => Math.floor(Math.random() * 3) + 1;
 
   const placeMoles = (board: Board): Board => {
     const moleCount = randomMoles();
     const newBoard = [...board];
 
-    for (let i = 0; i < moleCount; i++){
+    for (let i = 0; i < moleCount; i++) {
       let randomIndex: number;
 
       do {
         randomIndex = Math.floor(Math.random() * newBoard.length);
-      } while (newBoard[randomIndex] === 'mole');
+      } while (newBoard[randomIndex] === "mole");
 
-      newBoard[randomIndex] = 'mole';
+      newBoard[randomIndex] = "mole";
       console.log(`Mole placed at index ${randomIndex}`, newBoard);
 
       const moleVisibleTime = Math.random() * 3000 + 1000;
 
       setTimeout(() => {
-        setBoard(prevBoard => {
+        setBoard((prevBoard) => {
           const updatedBoard = [...prevBoard];
           updatedBoard[randomIndex] = null;
           console.log(`Mole removed at index ${randomIndex}`, updatedBoard);
           return updatedBoard;
         });
-      }, moleVisibleTime)
+      }, moleVisibleTime);
     }
-  
-   console.log(newBoard);
 
-   return newBoard;
-  }
+    console.log(newBoard);
+
+    return newBoard;
+  };
 
   //Denna placerar ut mullvadarna på olika index i arrayen Board så länge spelet är igång.
   useEffect(() => {
-    if (!isGameOngoing){
+    if (!isGameOngoing) {
       return;
     }
     const interval = setInterval(() => {
       placeMoles(board);
-    },1000);
+    }, 1000);
     return () => clearInterval(interval);
-  },[isGameOngoing])
-
+  }, [isGameOngoing]);
 
   //hanterar countdown
   const handleNewGame = () => {
@@ -113,11 +109,6 @@ const Game = () => {
 
   return (
     <div>
-      <StartButton
-        btnText="Start a New Game"
-        onClick={handleNewGame}
-        disabled={isGameOngoing}
-      />
       <div className="min-h-screen min-w-screen flex flex-col items-center">
         <div className="p-[20px 0px] flex min-w-full justify-around">
           <div className="game-timer">
@@ -130,7 +121,11 @@ const Game = () => {
             <div>{currentPoints} points</div>
           </div>
           <div className="game-start">
-            <div>start button placeholder</div>
+            <StartButton
+              btnText="Start a New Game"
+              onClick={handleNewGame}
+              disabled={isGameOngoing}
+            />
           </div>
         </div>
         <div className="game-board">
