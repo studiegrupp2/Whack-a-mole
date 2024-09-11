@@ -8,7 +8,7 @@ import Board from "@/components/Board";
 
 import Timer from "@/components/Timer";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
@@ -20,62 +20,102 @@ const Game = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
   const addPoints = () => {
+    // skicka med tile-typen och tile-index
+    // if type === mole then +1 poäng och kör en timeout som sätter board[index] till "hit" och sedan null efter x millisekunder
     setCurrentPoints(currentPoints + 1);
-    console.log(currentPoints);
+    setMoleAmountState((prev) => prev - 1);
+    console.log("points: " + currentPoints);
   };
-
-  const boardPlaceHolder = new Array(25).fill(null);
-  boardPlaceHolder[1] = "mole";
-  // byt ut ovan när mole-slumparen är mergad till main
 
   //spellogik:
 
   type Board = (null | "mole")[];
   const [board, setBoard] = useState<Board>(new Array(25).fill(null));
+  const [moleAmountState, setMoleAmountState] = useState<number>(0);
 
   const randomMoles = (): number => Math.floor(Math.random() * 3) + 1;
 
-  const placeMoles = (board: Board): Board => {
-    const moleCount = randomMoles();
-    const newBoard = [...board];
+  const placeMoles = useCallback(
+    (board: (null | "mole")[], spawnAmount?: number): (null | "mole")[] => {
+      let moleCount = randomMoles();
+      if (spawnAmount) {
+        moleCount = spawnAmount;
+      }
+      const newBoard = [...board];
 
-    for (let i = 0; i < moleCount; i++) {
-      let randomIndex: number;
+      for (let i = 0; i < moleCount; i++) {
+        let randomIndex: number;
 
-      do {
-        randomIndex = Math.floor(Math.random() * newBoard.length);
-      } while (newBoard[randomIndex] === "mole");
+        do {
+          randomIndex = Math.floor(Math.random() * newBoard.length);
+        } while (newBoard[randomIndex] === "mole");
 
-      newBoard[randomIndex] = "mole";
-      console.log(`Mole placed at index ${randomIndex}`, newBoard);
+        newBoard[randomIndex] = "mole";
+        //console.log(`Mole placed at index ${randomIndex}`, newBoard);
 
-      const moleVisibleTime = Math.random() * 3000 + 1000;
+        const moleVisibleTime = Math.random() * 3000 + 1000;
+        setMoleAmountState(newBoard.filter((tile) => tile === "mole").length);
 
-      setTimeout(() => {
-        setBoard((prevBoard) => {
-          const updatedBoard = [...prevBoard];
-          updatedBoard[randomIndex] = null;
-          console.log(`Mole removed at index ${randomIndex}`, updatedBoard);
-          return updatedBoard;
-        });
-      }, moleVisibleTime);
-    }
+        setTimeout(() => {
+          setBoard((prevBoard) => {
+            const updatedBoard = [...prevBoard];
+            updatedBoard[randomIndex] = null;
+            setMoleAmountState((prev) => prev - 1);
+            //console.log(`Mole removed at index ${randomIndex}`, updatedBoard);
+            return updatedBoard;
+          });
+        }, moleVisibleTime);
+      }
+      //console.log(newBoard);
 
-    console.log(newBoard);
-
-    return newBoard;
-  };
+      return newBoard;
+      // setBoard(newBoard);
+    },
+    []
+  );
 
   //Denna placerar ut mullvadarna på olika index i arrayen Board så länge spelet är igång.
+  // useEffect(() => {
+  //   if (!isGameOngoing) {
+  //     return;
+  //   }
+  //   // if moleAmountState === 0 then placeMoles,
+  //   // if moleAmountState < 3 then kanske generera nya moles
+  //   // if (moleAmountState < 3) { if (rng === 1) {placeMoles(1)} }
+  //   // setMoleAmountState() ska göras i placeMoles
+  //   // setMoleAmountState(board.filter((tile) => tile === "mole").length);
+  //   setMoleAmountState(board.filter((tile) => tile === "mole").length);
+  //   console.log(moleAmountState);
+  //   const interval = setInterval(() => {
+  //     console.log(board.filter((tile) => tile === "mole").length);
+  //     console.log(moleAmountState), placeMoles(board);
+  //   }, 4000);
+  //   return () => clearInterval(interval);
+  // }, [isGameOngoing, placeMoles, moleAmountState]);
+  // Run the game loop
   useEffect(() => {
-    if (!isGameOngoing) {
-      return;
+    if (!isGameOngoing) return;
+
+    // const interval = setInterval(() => {
+    console.log("mole amount" + moleAmountState);
+    // Add new moles if there are less than 3 active moles
+    if (isGameOngoing && moleAmountState === 0) {
+      setBoard((prevBoard) => placeMoles(prevBoard));
+    } else if (isGameOngoing && moleAmountState < 3) {
+      //add one mole
+      setBoard((prevBoard) => placeMoles(prevBoard, 1));
     }
-    const interval = setInterval(() => {
-      placeMoles(board);
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isGameOngoing]);
+    // }, 4000);
+
+    // return () => clearInterval(interval);
+  }, [isGameOngoing, moleAmountState, placeMoles]);
+
+  // // Run placeMoles(board) if no active moles
+  // useEffect(() => {
+  //   if (isGameOngoing && moleAmountState === 0) {
+  //     setBoard((prevBoard) => placeMoles(prevBoard));
+  //   }
+  // }, [isGameOngoing, moleAmountState, placeMoles]);
 
   //hanterar countdown
   const handleNewGame = () => {
@@ -130,7 +170,7 @@ const Game = () => {
         </div>
         <div className="game-board">
           <div>
-            <Board moleHit={addPoints} gameBoard={boardPlaceHolder} />
+            <Board moleHit={addPoints} gameBoard={board} />
           </div>
         </div>
       </div>

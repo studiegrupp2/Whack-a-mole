@@ -7,13 +7,11 @@ interface BoardProps {
 }
 
 const Board: React.FC<BoardProps> = ({ moleHit, gameBoard }) => {
-  const moleHitAddPoints = () => {
-    return moleHit();
-  };
-
   const handleOnClick = (type: string | null) => {
     if (type === "mole") {
-      moleHitAddPoints();
+      //Set tile till "hit" och sedan null
+
+      return moleHit();
     }
   };
 
