@@ -2,6 +2,7 @@
 import StartButton from "@/components/Button";
 import CountdownModal from "@/components/Countdown";
 import HighScoreModal from "@/components/HighScoreModal";
+import Board from "@/components/Board";
 
 // import Input from "@/components/Input";
 
@@ -12,15 +13,23 @@ import React, { useEffect, useState } from "react";
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
 
-  const [currentPoints, setCurrentPoints] = useState(0);
+
+  const [currentPoints, setCurrentPoints] = useState<number>(0);
 
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  //funktion för att öka poängen, kan användas i spellogiken när en mullvad träffas.
-   const addPoint = () => {
-     setCurrentPoints(currentPoints +1)
-   }
+
+
+  const addPoints = () => {
+    setCurrentPoints(currentPoints + 1);
+    console.log(currentPoints);
+  };
+
+  const boardPlaceHolder = new Array(25).fill(null);
+  boardPlaceHolder[1] = "mole";
+  // byt ut ovan när mole-slumparen är mergad till main
+
 
   //spellogik:
 
@@ -125,7 +134,9 @@ const Game = () => {
           </div>
         </div>
         <div className="game-board">
-          <div>game board placeholder</div>
+          <div>
+            <Board moleHit={addPoints} gameBoard={boardPlaceHolder} />
+          </div>
         </div>
       </div>
       {/* Show countdown modal if countdown is in progress */}
