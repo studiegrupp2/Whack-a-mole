@@ -81,6 +81,7 @@ const Game = () => {
   const handleNewGame = () => {
     if (!isGameOngoing) {
       setShowCountdown(true); // Show the countdown modal before starting the game
+      setCurrentPoints(0);
     }
   };
   const handleCountdownFinish = () => {
