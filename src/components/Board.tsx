@@ -2,20 +2,11 @@
 import React from "react";
 
 interface BoardProps {
-  moleHit: () => void;
-  gameBoard: (null | "mole")[];
+  moleHit: (holeId: number , type: string | null) => void;
+  gameBoard: (null | string )[];
 }
 
 const Board: React.FC<BoardProps> = ({ moleHit, gameBoard }) => {
-  const moleHitAddPoints = () => {
-    return moleHit();
-  };
-
-  const handleOnClick = (type: string | null) => {
-    if (type === "mole") {
-      moleHitAddPoints();
-    }
-  };
 
   return (
     <div className="game-board flex flex-col w-[80vw] h-[90vh]">
@@ -23,10 +14,12 @@ const Board: React.FC<BoardProps> = ({ moleHit, gameBoard }) => {
         <div key={rowIndex} className="flex h-[20%] gap-2">
           {gameBoard
             .slice(rowIndex * 5, (rowIndex + 1) * 5)
-            .map((type, holeId) => {
+            .map((type, colIndex) => {
+           
+              const holeId = rowIndex * 5 + colIndex;
               const backgroundImage =
-                type === "mole" ? "url(/mullvad4.png)" : "url(/hole.png)";
-              const backgroundSize = type === "mole" ? "cover" : "contain";
+                type === "mole" ? "url(/mullvad4.png)" : type === "hit" ? "url(/mullvad4-hit.png)" : "url(/hole.png)";
+              const backgroundSize = type === null ? "contain" : "cover";
 
               return (
                 <div
@@ -38,7 +31,7 @@ const Board: React.FC<BoardProps> = ({ moleHit, gameBoard }) => {
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                   }}
-                  onClick={() => handleOnClick(type)}
+                  onClick={() => moleHit(holeId, type)}
                 ></div>
               );
             })}

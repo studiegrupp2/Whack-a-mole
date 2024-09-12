@@ -8,7 +8,7 @@ import Board from "@/components/Board";
 
 import Timer from "@/components/Timer";
 
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 
 const Game = () => {
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
@@ -19,10 +19,23 @@ const Game = () => {
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  const addPoints = () => {
-    setCurrentPoints(currentPoints + 1);
-    console.log(currentPoints);
-  };
+  //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
+
+  const moleHit = useCallback((holeId: number, type: string | null) => {
+    if (type !== "mole") return;
+    //poäng
+    setCurrentPoints((prevPoints) => {
+      const updatedPoints = prevPoints + 1;
+      console.log(updatedPoints);
+      return updatedPoints;
+    });
+  // rita om brädan
+    setBoard((prevBoard) => {
+      const newBoard: (null | string)[] = [...prevBoard];
+      newBoard[holeId] = "hit";
+      return newBoard;
+    });
+  }, []);
 
   const boardPlaceHolder = new Array(25).fill(null);
   boardPlaceHolder[1] = "mole";
@@ -30,52 +43,48 @@ const Game = () => {
 
   //spellogik:
 
-  type Board = (null | "mole")[];
+  type Board = (null | string)[];
   const [board, setBoard] = useState<Board>(new Array(25).fill(null));
 
   const randomMoles = (): number => Math.floor(Math.random() * 3) + 1;
 
-  const placeMoles = (board: Board): Board => {
-    const moleCount = randomMoles();
-    const newBoard = [...board];
-
-    for (let i = 0; i < moleCount; i++) {
-      let randomIndex: number;
-
-      do {
-        randomIndex = Math.floor(Math.random() * newBoard.length);
-      } while (newBoard[randomIndex] === "mole");
-
-      newBoard[randomIndex] = "mole";
-      console.log(`Mole placed at index ${randomIndex}`, newBoard);
-
-      const moleVisibleTime = Math.random() * 3000 + 1000;
-
-      setTimeout(() => {
-        setBoard((prevBoard) => {
-          const updatedBoard = [...prevBoard];
-          updatedBoard[randomIndex] = null;
-          console.log(`Mole removed at index ${randomIndex}`, updatedBoard);
-          return updatedBoard;
-        });
-      }, moleVisibleTime);
-    }
-
-    console.log(newBoard);
-
-    return newBoard;
-  };
+  const placeMoles = useCallback(() => {
+    setBoard((prevBoard) => {
+      const moleCount = randomMoles();
+      const newBoard: (null | string )[] = [...prevBoard];
+      const availableIndices: number[] = newBoard
+        .map((_, index) => index)
+        .filter(i => newBoard[i] === null);
+  
+      for (let i = 0; i < moleCount; i++) {
+        if (availableIndices.length === 0) break; // No more places to put moles
+  
+        const randomIndex: number = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+        newBoard[randomIndex] = "mole";
+  
+        const moleVisibleTime = Math.random() * 3000 + 1000;
+        setTimeout(() => {
+          setBoard((board) => {
+            const updatedBoard = [...board];
+            updatedBoard[randomIndex] = null;
+            return updatedBoard;
+          });
+        }, moleVisibleTime);
+      }
+  
+      return newBoard;
+    });
+  }, []);
+  
 
   //Denna placerar ut mullvadarna på olika index i arrayen Board så länge spelet är igång.
   useEffect(() => {
     if (!isGameOngoing) {
       return;
     }
-    const interval = setInterval(() => {
-      placeMoles(board);
-    }, 1000);
+    const interval = setInterval(placeMoles, 4000)
     return () => clearInterval(interval);
-  }, [isGameOngoing]);
+  }, [isGameOngoing, placeMoles]);
 
   //hanterar countdown
   const handleNewGame = () => {
@@ -130,7 +139,7 @@ const Game = () => {
         </div>
         <div className="game-board">
           <div>
-            <Board moleHit={addPoints} gameBoard={boardPlaceHolder} />
+            <Board moleHit={moleHit} gameBoard={board} />
           </div>
         </div>
       </div>
