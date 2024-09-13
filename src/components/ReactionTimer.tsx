@@ -8,15 +8,21 @@ export const ReactionTimer: React.FC<ReactionProps> = () => {
   const [seconds, setSeconds] = useState(0);
   const [hit, setHit] = useState<number[]>([]);
   const [isRunning, setIsRunning] = useState(false);
+  const [fastestTime, setFastestTime] = useState(0);
+
 
   const handleStart = () => {
     setIsRunning(true)
+    
   }
 
   const onHit = () => {
     setHit([...hit, seconds]);
+    const fastest = hit.reduce((prev, curr) => prev < curr ? prev : curr);
+    setFastestTime(fastest)
     setSeconds(0);
     setIsRunning(false)
+    
   };
   
   useEffect(() => {
@@ -34,6 +40,7 @@ export const ReactionTimer: React.FC<ReactionProps> = () => {
   return (
     <div>
       <h1>{seconds}</h1>
+
       <button className="w-10 h-10 bg-black text-white " onClick={handleStart}>start </button>
       <button onClick={onHit}> finish</button>
       <div>
@@ -41,6 +48,7 @@ export const ReactionTimer: React.FC<ReactionProps> = () => {
             <li key={i}>{h} milliseconds</li>
         ))}
       </div>
+      <h1>{fastestTime}</h1>
       
     </div>
   )
