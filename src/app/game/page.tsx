@@ -2,6 +2,7 @@
 import StartButton from "@/components/Button";
 import CountdownModal from "@/components/Countdown";
 import HighScoreModal from "@/components/HighScoreModal";
+import { ReactionTimer } from "@/components/ReactionTimer";
 
 // import Input from "@/components/Input";
 
@@ -64,6 +65,7 @@ const Game = () => {
               isGameOnGoing={isGameOngoing}
               handleFinish={handleGameTimerFinish}
             />
+            <ReactionTimer/>
           </div>
           <div className="game-points">
             <div>{/* {currentPoints} points */}</div>
