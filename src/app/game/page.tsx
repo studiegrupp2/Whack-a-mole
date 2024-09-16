@@ -29,7 +29,7 @@ const Game = () => {
       console.log(updatedPoints);
       return updatedPoints;
     });
-  // rita om brädan
+    // rita om brädan
     setBoard((prevBoard) => {
       const newBoard: (null | string)[] = [...prevBoard];
       newBoard[holeId] = "hit";
@@ -37,31 +37,32 @@ const Game = () => {
     });
   }, []);
 
-  const boardPlaceHolder = new Array(25).fill(null);
-  boardPlaceHolder[1] = "mole";
-  // byt ut ovan när mole-slumparen är mergad till main
-
   //spellogik:
-
   type Board = (null | string)[];
   const [board, setBoard] = useState<Board>(new Array(25).fill(null));
 
   const randomMoles = (): number => Math.floor(Math.random() * 3) + 1;
 
-  const placeMoles = useCallback(() => {
+  function placeMoles(amountToAdd?: number) {
     setBoard((prevBoard) => {
-      const moleCount = randomMoles();
-      const newBoard: (null | string )[] = [...prevBoard];
+      let moleCount: number;
+      if (amountToAdd) {
+        moleCount = amountToAdd;
+      } else {
+        moleCount = randomMoles();
+      }
+      const newBoard: (null | string)[] = [...prevBoard];
       const availableIndices: number[] = newBoard
         .map((_, index) => index)
-        .filter(i => newBoard[i] === null);
-  
+        .filter((i) => newBoard[i] === null);
+
       for (let i = 0; i < moleCount; i++) {
         if (availableIndices.length === 0) break; // No more places to put moles
-  
-        const randomIndex: number = availableIndices[Math.floor(Math.random() * availableIndices.length)];
+
+        const randomIndex: number =
+          availableIndices[Math.floor(Math.random() * availableIndices.length)];
         newBoard[randomIndex] = "mole";
-  
+
         const moleVisibleTime = Math.random() * 3000 + 1000;
         setTimeout(() => {
           setBoard((board) => {
@@ -71,20 +72,31 @@ const Game = () => {
           });
         }, moleVisibleTime);
       }
-  
+
       return newBoard;
     });
-  }, []);
-  
+  }
 
   //Denna placerar ut mullvadarna på olika index i arrayen Board så länge spelet är igång.
   useEffect(() => {
     if (!isGameOngoing) {
       return;
     }
-    const interval = setInterval(placeMoles, 4000)
-    return () => clearInterval(interval);
-  }, [isGameOngoing, placeMoles]);
+    const currentMoleAmount = board.filter(
+      (tile) => tile === "mole" || tile === "hit"
+    ).length;
+
+    if (currentMoleAmount === 0) {
+      //Skapa 1 till 3 nya mullvadar
+      placeMoles(1);
+    } else if (currentMoleAmount < 3) {
+      //Skapa kanske 1 ny mullvad (rng 0-1)
+      if (Math.random() > 0.4) {
+        placeMoles(1);
+      }
+    }
+    console.log(board);
+  }, [isGameOngoing, board]);
 
   //hanterar countdown
   const handleNewGame = () => {
