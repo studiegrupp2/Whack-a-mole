@@ -88,14 +88,14 @@ const Game = () => {
 
     if (currentMoleAmount === 0) {
       //Skapa 1 till 3 nya mullvadar
-      placeMoles(1);
+      placeMoles(randomMoles());
     } else if (currentMoleAmount < 3) {
-      //Skapa kanske 1 ny mullvad (rng 0-1)
+      //Skapa som mest 3 moles - currentMoleAmount
+      const maxNewMoles = 3 - currentMoleAmount;
       if (Math.random() > 0.4) {
-        placeMoles(1);
+        placeMoles(Math.min(randomMoles(), maxNewMoles));
       }
     }
-    console.log(board);
   }, [isGameOngoing, board]);
 
   //hanterar countdown
