@@ -15,6 +15,7 @@ const StartForm = () => {
         //   body: formData,
           
         // })
+        
         router.push("/game");
     }
      
