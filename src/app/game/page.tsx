@@ -9,8 +9,10 @@ import Board from "@/components/Board";
 import Timer from "@/components/Timer";
 
 import React, { useCallback, useEffect, useState } from "react";
+import PostData from "../api/postData";
 
 const Game = () => {
+ 
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
 
   const [currentPoints, setCurrentPoints] = useState<number>(0);
@@ -19,8 +21,18 @@ const Game = () => {
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
-  //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
+  //Hämta användaren från localstorage:
+  const [userName, setUserName] = useState<string>("");
 
+    useEffect(() => {
+        // Hämta användarnamnet från localStorage
+        const storedName = localStorage.getItem('userName');
+        if (storedName) {
+            setUserName(storedName);
+        }
+    }, []);
+
+  //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
   const moleHit = useCallback((holeId: number, type: string | null) => {
     if (type !== "mole") return;
     //poäng
@@ -116,17 +128,20 @@ const Game = () => {
     if (gameFinished) {
       setIsModalOpen(true);
 
+
       const closeModalTimer = setTimeout(() => {
         setIsModalOpen(false);
       }, 10000);
       return () => clearTimeout(closeModalTimer);
     }
-  }, [gameFinished]);
+  }, [gameFinished,userName,currentPoints]);
 
   //hanterar speltimern
   const handleGameTimerFinish = () => {
     setIsGameOnGoing(false);
     setGameFinished(true);
+    console.log(userName, currentPoints)
+    PostData(userName, currentPoints)
   };
 
   return (
@@ -142,6 +157,7 @@ const Game = () => {
           <div className="game-points text-4xl font-extrabold">
             <div className="">{currentPoints} points</div>
           </div>
+          <p>{userName}</p>
           <div className="game-start">
             <StartButton
               btnText="Start a New Game"
