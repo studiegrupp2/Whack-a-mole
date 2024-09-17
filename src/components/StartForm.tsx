@@ -9,12 +9,12 @@ const StartForm = () => {
     async function onSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
      
-        const formData = new FormData(event.currentTarget)
-        const response = await fetch('/api/submit', {
-          method: 'POST',
-          body: formData,
+        // const formData = new FormData(event.currentTarget)
+        // const response = await fetch('/api/submit', {
+        //   method: 'POST',
+        //   body: formData,
           
-        })
+        // })
         router.push("/game");
     }
      
