@@ -1,6 +1,7 @@
 "use client";
 import Input from "@/components/Input";
 import HighScoreModalButton from "@/components/OpenHighScoreModalButton";
+import StartForm from "@/components/StartForm";
 import StartPageButton from "@/components/StartPageButton";
 import { useState } from "react";
 
@@ -16,10 +17,7 @@ export default function WhackAMole() {
       style={{
       backgroundImage: "url('/start-bg.png')",
     }}>
-      <StartPageButton />
-      <Input value={playerName} onChange={handleOnChange} />
-
-      <HighScoreModalButton />
+      <StartForm/>
     </div>
   );
 }
