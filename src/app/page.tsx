@@ -20,3 +20,20 @@ export default function WhackAMole() {
     </div>
   );
 }
+
+
+// import { sql } from "@vercel/postgres";
+
+// export default async function Cart() {
+//   const { rows } = await sql`SELECT * from HighScore`;
+
+//   return (
+//     <div>
+//       {rows.map((row) => (
+//         <div key={row.id}>
+//           {row.name} - {row.score}
+//         </div>
+//       ))}
+//     </div>
+//   );
+// }
