@@ -25,12 +25,8 @@ const Game = () => {
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
-  // const [userName, setUserName] = useState<string | null>(null);
-  // const isLocalhostNull = localStorage.getItem("userName");
- const router = useRouter();
+  const router = useRouter();
   const [userName, setUserName] = useState<string>("Anonym");
- // const isLocalhostNull = localStorage.getItem("userName");
 
   // kolla så att användarnamnet ej är null och hämta användarnamnet
   useEffect(() => {
@@ -39,31 +35,11 @@ const Game = () => {
       setUserName(storedName);
     }
 
-    if(!storedName) {
-      router.push("/")
+    if (!storedName) {
+      router.push("/");
     }
   }, []);
-  // kolla så att användarnamnet ej är null och hämta användarnamnet
-  // useEffect(() => {
-  //   if (!isLocalhostNull) {
-  //     router.push("/");
-  //   }
-  //   if(isLocalhostNull){
-  //   const storedName = localStorage.getItem("userName");
-  //   if (storedName) {
-  //     setUserName(storedName);
-  //   }
-  //  }
-  // }, [router, isLocalhostNull]);
 
-  // useEffect(() => {
-  //   const storedName = localStorage.getItem("userName");
-  //   if (!storedName) {
-  //     router.push("/");
-  //   } else {
-  //     setUserName(storedName);
-  //   }
-  // }, [router]);
   useEffect(() => {
     const getData = async () => {
       try {

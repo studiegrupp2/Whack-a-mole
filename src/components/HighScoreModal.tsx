@@ -12,11 +12,10 @@ interface Props {
   highScoreArray: HighScore[];
 }
 const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
-  
   useEffect(() => {
     FetchData();
-  },[]);
-  
+  }, []);
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
       <div className=" flex  text-center flex-col bg-white  rounded-lg shadow-lg w-1/2 h-1/2 overflow-scroll scrollbar-hide relative">
@@ -35,17 +34,17 @@ const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-bold">Name</h2>
-                    <ul>
+                  <ul>
                     {highScoreArray.map((player) => (
-                      <li key={player.name} >{player.name}</li>
+                      <li key={player.name}>{player.name}</li>
                     ))}
-                    </ul>
+                  </ul>
                 </div>
                 <div>
                   <h2 className="font-bold">Score</h2>
-                   <ul>
-                      {highScoreArray.map((player) => (
-                        <li key={player.score}>{player.score}</li>
+                  <ul>
+                    {highScoreArray.map((player) => (
+                      <li key={player.score}>{player.score}</li>
                     ))}
                   </ul>
                 </div>

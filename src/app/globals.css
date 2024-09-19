@@ -2,20 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
-
 .scrollbar-hide::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .scrollbar-hide {
-    scrollbar-width: none;
+  scrollbar-width: none;
 }
 
 .rotate {
-    transform: rotate(-120deg);
-
+  transform: rotate(-120deg);
 }
 
 body {
-    cursor: pointer;
+  cursor: pointer;
 }

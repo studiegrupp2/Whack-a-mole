@@ -6,7 +6,7 @@ interface TimerProps {
   handleFinish: () => void;
 }
 const Timer: React.FC<TimerProps> = ({ isGameOnGoing, handleFinish }) => {
-  const [time, setTime] = useState<number>(2);
+  const [time, setTime] = useState<number>(60);
 
   useEffect(() => {
     if (!isGameOnGoing) {
@@ -17,11 +17,11 @@ const Timer: React.FC<TimerProps> = ({ isGameOnGoing, handleFinish }) => {
       setTime(60);
       return;
     }
-    
+
     const clock = setTimeout(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
-    
+
     return () => clearTimeout(clock);
   }, [time, isGameOnGoing]);
 
