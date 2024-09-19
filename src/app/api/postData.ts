@@ -13,11 +13,7 @@ export default async function PostData(userName: string, currentPoints: number) 
     await sql`INSERT INTO HighScore (name, score) VALUES (${userName}, ${currentPoints})`;
     console.log("Data inserted successfully");
 
-    // Fetch all scores
-    const result = await sql`SELECT * FROM HighScore ORDER BY score DESC`;
-    console.log("All scores:", result.rows);
-
-    return result.rows;
+  
   } catch (error) {
     console.error("Error occurred:", error);
     throw error;

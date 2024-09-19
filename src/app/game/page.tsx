@@ -10,27 +10,59 @@ import Timer from "@/components/Timer";
 
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
+import FetchData from "../api/fetchData";
+
+interface HighScore {
+  name: string;
+  score: number;
+}
 
 const Game = () => {
- 
   const [isGameOngoing, setIsGameOnGoing] = useState<boolean>(false);
-
   const [currentPoints, setCurrentPoints] = useState<number>(0);
-
   const [showCountdown, setShowCountdown] = useState<boolean>(false);
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        setIsLoading(true);
+        const scores = await FetchData();
+
+        // kollar top10 i listan
+        const top10players = scores
+          .sort((a, b) => b.score - a.score)
+          .slice(0, 10);
+        //returnerar top10 in i highscoreModalen
+        setHighScoreArray(top10players);
+
+        setError(null);
+        console.log(top10players, isLoading, error);
+      } catch (err) {
+        setError("Failed to fetch high scores");
+        console.error(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getData();
+  }, [gameFinished]);
 
   //Hämta användaren från localstorage:
   const [userName, setUserName] = useState<string>("");
 
-    useEffect(() => {
-        // Hämta användarnamnet från localStorage
-        const storedName = localStorage.getItem('userName');
-        if (storedName) {
-            setUserName(storedName);
-        }
-    }, []);
+  useEffect(() => {
+    // Hämta användarnamnet från localStorage
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, []);
 
   //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
   const moleHit = useCallback((holeId: number, type: string | null) => {
@@ -128,20 +160,19 @@ const Game = () => {
     if (gameFinished) {
       setIsModalOpen(true);
 
-
       const closeModalTimer = setTimeout(() => {
         setIsModalOpen(false);
       }, 10000);
       return () => clearTimeout(closeModalTimer);
     }
-  }, [gameFinished,userName,currentPoints]);
+  }, [gameFinished, userName, currentPoints]);
 
   //hanterar speltimern
   const handleGameTimerFinish = () => {
     setIsGameOnGoing(false);
     setGameFinished(true);
-    console.log(userName, currentPoints)
-    PostData(userName, currentPoints)
+    console.log(userName, currentPoints);
+    PostData(userName, currentPoints);
   };
 
   return (
@@ -178,13 +209,13 @@ const Game = () => {
       )}
 
       {isModalOpen && (
-        <HighScoreModal closeModal={() => setIsModalOpen(false)} />
+        <HighScoreModal
+          closeModal={() => setIsModalOpen(false)}
+          highScoreArray={highScoreArray}
+        />
       )}
     </div>
   );
 };
 
 export default Game;
-
-
- 
