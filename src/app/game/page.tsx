@@ -3,14 +3,12 @@ import StartButton from "@/components/Button";
 import CountdownModal from "@/components/Countdown";
 import HighScoreModal from "@/components/HighScoreModal";
 import Board from "@/components/Board";
-
-// import Input from "@/components/Input";
-
 import Timer from "@/components/Timer";
-
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
+import { useRouter } from "next/navigation";
+import CustomCursor from "@/components/CustomCursor";
 
 interface HighScore {
   name: string;
@@ -26,6 +24,20 @@ const Game = () => {
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [userName, setUserName] = useState<string>("");
+  const isLocalhostNull = localStorage.getItem("userName");
+
+  // kolla så att användarnamnet ej är null och hämta användarnamnet
+  useEffect(() => {
+    if (!isLocalhostNull) {
+      router.push("/");
+    }
+    const storedName = localStorage.getItem("userName");
+    if (storedName) {
+      setUserName(storedName);
+    }
+  }, [router, isLocalhostNull]);
 
   useEffect(() => {
     const getData = async () => {
@@ -52,17 +64,6 @@ const Game = () => {
 
     getData();
   }, [gameFinished]);
-
-  //Hämta användaren från localstorage:
-  const [userName, setUserName] = useState<string>("");
-
-  useEffect(() => {
-    // Hämta användarnamnet från localStorage
-    const storedName = localStorage.getItem("userName");
-    if (storedName) {
-      setUserName(storedName);
-    }
-  }, []);
 
   //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
   const moleHit = useCallback((holeId: number, type: string | null) => {
@@ -147,6 +148,7 @@ const Game = () => {
     if (!isGameOngoing) {
       setShowCountdown(true); // Show the countdown modal before starting the game
       setCurrentPoints(0);
+      setGameFinished(false)
     }
   };
   const handleCountdownFinish = () => {
@@ -157,7 +159,7 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (gameFinished) {
+    if (gameFinished) { 
       setIsModalOpen(true);
 
       const closeModalTimer = setTimeout(() => {
@@ -176,10 +178,13 @@ const Game = () => {
   };
 
   return (
-    <div>
-      <div className="min-h-screen min-w-screen flex flex-col items-center bg-cover bg-center " style={{
-      backgroundImage: "url('/game-bg.jpg')",
-    }}>
+    <div className="">
+      <div
+        className="min-h-screen min-w-screen flex flex-col items-center bg-cover bg-center "
+        style={{
+          backgroundImage: "url('/game-bg.jpg')",
+        }}
+      >
         <div className="p-[20px 0px] py-2 flex min-w-full justify-around">
           <div className="game-timer">
             <Timer
@@ -199,7 +204,9 @@ const Game = () => {
             />
           </div>
         </div>
-        <div className="game-board">
+        <div className={`${isGameOngoing ? 'cursor-none' : ""}`}>
+          {isGameOngoing && <CustomCursor />}
+
           <div>
             <Board moleHit={moleHit} gameBoard={board} />
           </div>
