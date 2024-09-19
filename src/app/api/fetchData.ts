@@ -11,7 +11,6 @@ export default async function FetchData(): Promise<HighScore[]> {
     const result = await sql `SELECT * FROM HighScore ORDER BY score DESC`;
         console.log("All scores:", result.rows);
         
-
         const highScores: HighScore[] = result.rows.map(row => ({
             name: row.name,
             score: Number(row.score)
