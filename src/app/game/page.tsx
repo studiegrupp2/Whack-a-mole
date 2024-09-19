@@ -11,6 +11,8 @@ import Timer from "@/components/Timer";
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
+import { useRouter } from "next/navigation";
+
 
 interface HighScore {
   name: string;
@@ -26,7 +28,16 @@ const Game = () => {
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
 
+  const isLocalhostNull = localStorage.getItem("userName")
+
+  // kolla så att användarnamnet ej är null
+  useEffect(() => {
+    if(!isLocalhostNull){
+      router.push("/");
+    }
+  })
   useEffect(() => {
     const getData = async () => {
       try {
