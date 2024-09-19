@@ -9,6 +9,7 @@ import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
 // import { useRouter } from "next/navigation";
 import CustomCursor from "@/components/CustomCursor";
+import { useRouter } from "next/navigation";
 
 interface HighScore {
   name: string;
@@ -27,7 +28,7 @@ const Game = () => {
 
   // const [userName, setUserName] = useState<string | null>(null);
   // const isLocalhostNull = localStorage.getItem("userName");
- // const router = useRouter();
+ const router = useRouter();
   const [userName, setUserName] = useState<string>("Anonym");
  // const isLocalhostNull = localStorage.getItem("userName");
 
@@ -36,6 +37,10 @@ const Game = () => {
     const storedName = localStorage.getItem("userName");
     if (storedName) {
       setUserName(storedName);
+    }
+
+    if(!storedName) {
+      router.push("/")
     }
   }, []);
   // kolla så att användarnamnet ej är null och hämta användarnamnet

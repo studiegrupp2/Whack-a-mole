@@ -2,6 +2,7 @@
 import React, { FormEvent, useState } from "react";
 import HighScoreModalButton from "./OpenHighScoreModalButton";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 // const StartForm = () => {
 //   const router = useRouter();
@@ -17,16 +18,18 @@ import { useRouter } from "next/navigation";
 //     }
 //   }
 const StartForm = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [userName, setUserName] = useState("");
 
+  useEffect(() => {
+    localStorage.clear()
+  },[]);
+  
+  function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-  function onSubmit(event: FormEvent<HTMLFormElement>){
-      event.preventDefault()
-      
-      localStorage.setItem('userName', userName);
-      router.push("./game");
-
+    localStorage.setItem("userName", userName);
+    router.push("./game");
   }
   return (
     <>
