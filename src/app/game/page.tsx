@@ -7,7 +7,7 @@ import Timer from "@/components/Timer";
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import CustomCursor from "@/components/CustomCursor";
 
 interface HighScore {
@@ -24,21 +24,41 @@ const Game = () => {
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
-  const [userName, setUserName] = useState<string>("");
-  const isLocalhostNull = localStorage.getItem("userName");
+
+  // const [userName, setUserName] = useState<string | null>(null);
+  // const isLocalhostNull = localStorage.getItem("userName");
+ // const router = useRouter();
+  const [userName, setUserName] = useState<string>("Anonym");
+ // const isLocalhostNull = localStorage.getItem("userName");
 
   // kolla så att användarnamnet ej är null och hämta användarnamnet
   useEffect(() => {
-    if (!isLocalhostNull) {
-      router.push("/");
-    }
     const storedName = localStorage.getItem("userName");
     if (storedName) {
       setUserName(storedName);
     }
-  }, [router, isLocalhostNull]);
+  }, []);
+  // kolla så att användarnamnet ej är null och hämta användarnamnet
+  // useEffect(() => {
+  //   if (!isLocalhostNull) {
+  //     router.push("/");
+  //   }
+  //   if(isLocalhostNull){
+  //   const storedName = localStorage.getItem("userName");
+  //   if (storedName) {
+  //     setUserName(storedName);
+  //   }
+  //  }
+  // }, [router, isLocalhostNull]);
 
+  // useEffect(() => {
+  //   const storedName = localStorage.getItem("userName");
+  //   if (!storedName) {
+  //     router.push("/");
+  //   } else {
+  //     setUserName(storedName);
+  //   }
+  // }, [router]);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -148,7 +168,7 @@ const Game = () => {
     if (!isGameOngoing) {
       setShowCountdown(true); // Show the countdown modal before starting the game
       setCurrentPoints(0);
-      setGameFinished(false)
+      setGameFinished(false);
     }
   };
   const handleCountdownFinish = () => {
@@ -159,7 +179,7 @@ const Game = () => {
   };
 
   useEffect(() => {
-    if (gameFinished) { 
+    if (gameFinished) {
       setIsModalOpen(true);
 
       const closeModalTimer = setTimeout(() => {
@@ -204,7 +224,7 @@ const Game = () => {
             />
           </div>
         </div>
-        <div className={`${isGameOngoing ? 'cursor-none' : ""}`}>
+        <div className={`${isGameOngoing ? "cursor-none" : ""}`}>
           {isGameOngoing && <CustomCursor />}
 
           <div>
