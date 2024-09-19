@@ -37,8 +37,8 @@ const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
                   <h2 className="font-bold">Name</h2>
                   
                     {highScoreArray.map((player) => (
-                      <ul>
-                      <li>{player.name}</li>
+                      <ul key={player.name}>
+                      <li >{player.name}</li>
                       </ul>
                     ))}
                 
@@ -47,8 +47,8 @@ const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
                   <h2 className="font-bold">Score</h2>
                   
                   {highScoreArray.map((player) => (
-                      <ul>
-                      <li>{player.score}</li>
+                      <ul key={player.score} >
+                      <li >{player.score}</li>
                       </ul>
                     ))}
               

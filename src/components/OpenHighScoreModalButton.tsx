@@ -45,9 +45,9 @@ const HighScoreModalButton: React.FC = () => {
     setIsModalOpen(true);
     // setOpenHighScoreModal(!openHighScoreModal)∏
   };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+  // const closeModal = () => {
+  //   setIsModalOpen(false);
+  // };
 
   return (
     <div>
