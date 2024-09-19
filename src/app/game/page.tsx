@@ -7,7 +7,7 @@ import Timer from "@/components/Timer";
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import CustomCursor from "@/components/CustomCursor";
 
 interface HighScore {
