@@ -35,23 +35,19 @@ const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
               <div className="flex items-center justify-between">
                 <div>
                   <h2 className="font-bold">Name</h2>
-                  
+                    <ul>
                     {highScoreArray.map((player) => (
-                      <ul key={player.name}>
-                      <li >{player.name}</li>
-                      </ul>
+                      <li key={player.name} >{player.name}</li>
                     ))}
-                
+                    </ul>
                 </div>
                 <div>
                   <h2 className="font-bold">Score</h2>
-                  
-                  {highScoreArray.map((player) => (
-                      <ul key={player.score} >
-                      <li >{player.score}</li>
-                      </ul>
+                   <ul>
+                      {highScoreArray.map((player) => (
+                        <li key={player.score}>{player.score}</li>
                     ))}
-              
+                  </ul>
                 </div>
               </div>
             </div>
