@@ -12,9 +12,11 @@ interface Props {
   highScoreArray: HighScore[];
 }
 const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
+  
   useEffect(() => {
     FetchData();
-  });
+  },[]);
+  
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center ">
       <div className=" flex  text-center flex-col bg-white  rounded-lg shadow-lg w-1/2 h-1/2 overflow-scroll scrollbar-hide relative">
