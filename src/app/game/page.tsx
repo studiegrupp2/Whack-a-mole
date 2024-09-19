@@ -33,10 +33,12 @@ const Game = () => {
     if (!isLocalhostNull) {
       router.push("/");
     }
+    if(isLocalhostNull){
     const storedName = localStorage.getItem("userName");
     if (storedName) {
       setUserName(storedName);
     }
+   }
   }, [router, isLocalhostNull]);
 
   useEffect(() => {
