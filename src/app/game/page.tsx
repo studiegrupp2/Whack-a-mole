@@ -119,7 +119,9 @@ const Game = () => {
 
   return (
     <div>
-      <div className="min-h-screen min-w-screen flex flex-col items-center">
+      <div className="min-h-screen min-w-screen flex flex-col items-center" style={{
+      backgroundImage: "url('/game-bg.jpg')",
+    }}>
         <div className="p-[20px 0px] py-2 flex min-w-full justify-around">
           <div className="game-timer">
             <Timer
