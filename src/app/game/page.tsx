@@ -11,6 +11,7 @@ import FetchData from "../api/fetchData";
 import CustomCursor from "@/components/CustomCursor";
 import { useRouter } from "next/navigation";
 
+
 interface HighScore {
   name: string;
   score: number;
@@ -27,6 +28,16 @@ const Game = () => {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [userName, setUserName] = useState<string>("Anonym");
+
+  function Bonk(){
+    new Audio('../bonk.mp3').play()
+  }
+  function Finish(){
+    new Audio('../finishSound.mp3').play()
+  }
+  function Start(){
+    new Audio('../startSound.mp3').play()
+  }
 
   // kolla så att användarnamnet ej är null och hämta användarnamnet
   useEffect(() => {
@@ -73,6 +84,7 @@ const Game = () => {
     setCurrentPoints((prevPoints) => {
       const updatedPoints = prevPoints + 1;
       console.log(updatedPoints);
+      Bonk()
       return updatedPoints;
     });
     // rita om brädan
@@ -150,6 +162,7 @@ const Game = () => {
       setShowCountdown(true); // Show the countdown modal before starting the game
       setCurrentPoints(0);
       setGameFinished(false);
+      Start()
     }
   };
   const handleCountdownFinish = () => {
@@ -176,6 +189,7 @@ const Game = () => {
     setGameFinished(true);
     console.log(userName, currentPoints);
     PostData(userName, currentPoints);
+    Finish()
   };
 
   return (
