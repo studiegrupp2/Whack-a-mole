@@ -4,6 +4,7 @@
 
 
 
+
 @keyframes jump {
     0% {
       transform: translateY(0);
@@ -22,3 +23,19 @@
   .jumping {
     animation: jump 1s ease-in-out infinite; 
   }
+=======
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  scrollbar-width: none;
+}
+
+.rotate {
+  transform: rotate(-120deg);
+}
+
+body {
+  cursor: pointer;
+}

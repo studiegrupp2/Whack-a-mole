@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface CountdownModalProps {
   onCountdownFinish: () => void;
 }
 
-const CountdownModal: React.FC<CountdownModalProps> = ({ onCountdownFinish }) => {
+const CountdownModal: React.FC<CountdownModalProps> = ({
+  onCountdownFinish,
+}) => {
   const [count, setCount] = useState<number>(3);
 
   useEffect(() => {
@@ -12,7 +14,7 @@ const CountdownModal: React.FC<CountdownModalProps> = ({ onCountdownFinish }) =>
       onCountdownFinish();
       return;
     }
-    
+
     const timer = setTimeout(() => {
       setCount((prevCount) => prevCount - 1);
     }, 1000);

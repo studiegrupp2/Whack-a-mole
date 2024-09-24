@@ -17,15 +17,15 @@ const Timer: React.FC<TimerProps> = ({ isGameOnGoing, handleFinish }) => {
       setTime(60);
       return;
     }
-    
+
     const clock = setTimeout(() => {
       setTime((prevTime) => prevTime - 1);
     }, 1000);
-    
+
     return () => clearTimeout(clock);
   }, [time, isGameOnGoing]);
 
-  return <div>{time}</div>;
+  return <div className="text-4xl font-extrabold">{time}</div>;
 };
 
 export default Timer;
