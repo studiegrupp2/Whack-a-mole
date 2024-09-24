@@ -7,14 +7,10 @@ import Timer from "@/components/Timer";
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
-import ReactionFetch  from "../api/reactionData";
-
-// import { useRouter } from "next/navigation";
+import ReactionFetch from "../api/reactionData";
 import CustomCursor from "@/components/CustomCursor";
 import { useRouter } from "next/navigation";
 import EasterEggButton from "@/components/Eastereggbutton";
-
-
 
 interface HighScore {
   name: string;
@@ -49,16 +45,15 @@ const Game = () => {
   type Board = MoleState[];
   const [board, setBoard] = useState<Board>(new Array(25).fill({ type: null }));
 
-  function Bonk(){
-    new Audio('../bonk.mp3').play()
+  function Bonk() {
+    new Audio("../bonk.mp3").play();
   }
-  function Finish(){
-    new Audio('../finishSound.mp3').play()
+  function Finish() {
+    new Audio("../finishSound.mp3").play();
   }
-  function Start(){
-    new Audio('../startSound.mp3').play()
+  function Start() {
+    new Audio("../startSound.mp3").play();
   }
-
 
   // kolla så att användarnamnet ej är null och hämta användarnamnet
   useEffect(() => {
@@ -76,10 +71,8 @@ const Game = () => {
       try {
         setIsLoading(true);
 
-        const [scores, reaction]: [HighScore[], ReactionProp[]] = await Promise.all([
-          FetchData(),
-          ReactionFetch()
-        ]);
+        const [scores, reaction]: [HighScore[], ReactionProp[]] =
+          await Promise.all([FetchData(), ReactionFetch()]);
 
         // kollar top10 i listan
         const top10players = scores
@@ -89,8 +82,8 @@ const Game = () => {
         setHighScoreArray(top10players);
 
         const top10reactionplayers = reaction
-        .sort((a, b) => b.reactionTime - a.reactionTime)
-        .slice(0, 10);
+          .sort((a, b) => b.reactionTime - a.reactionTime)
+          .slice(0, 10);
         setReactionArray(top10reactionplayers);
 
         setError(null);
@@ -106,7 +99,6 @@ const Game = () => {
   }, [gameFinished]);
 
   //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
-ReactionFetch();
   const moleHit = useCallback(
     (holeId: number, type: string | null) => {
       if (type !== "mole") return;
@@ -126,19 +118,16 @@ ReactionFetch();
             setFastestReactionTime(reactionTime);
           }
         }
-
         newBoard[holeId] = { type: "hit" };
         return newBoard;
       });
-      
       setCurrentPoints((prevPoints) => prevPoints + 1);
-      Bonk()
+      Bonk();
     },
     [fastestReactionTime]
   );
 
   //spellogik:
-
   const randomMoles = (): number => Math.floor(Math.random() * 3) + 1;
 
   function placeMoles(amountToAdd?: number) {
@@ -198,7 +187,7 @@ ReactionFetch();
       setCurrentPoints(0);
       setGameFinished(false);
       setFastestReactionTime(null);
-      Start()
+      Start();
     }
   };
   const handleCountdownFinish = () => {
@@ -223,10 +212,10 @@ ReactionFetch();
   const handleGameTimerFinish = () => {
     setIsGameOnGoing(false);
     setGameFinished(true);
-    if(fastestReactionTime){
+    if (fastestReactionTime) {
       PostData(userName, currentPoints, fastestReactionTime);
     }
-    Finish()
+    Finish();
   };
 
   return (
@@ -247,7 +236,9 @@ ReactionFetch();
           <div className="game-points text-4xl font-extrabold">
             <div className="">{currentPoints} points</div>
           </div>
-          <p className="text-4xl font-extrabold ">Player: <u>{userName}</u></p>
+          <p className="text-4xl font-extrabold ">
+            Player: <u>{userName}</u>
+          </p>
           <div className="game-start">
             <StartButton
               btnText="Start a New Game"
@@ -263,19 +254,13 @@ ReactionFetch();
             <Board moleHit={moleHit} gameBoard={board} />
           </div>
         </div>
-
-
         <div className="flex flex-row justify-self-start w-full ">
-        <EasterEggButton   />
-
+          <EasterEggButton />
         </div>
-
       </div>
-      {/* Show countdown modal if countdown is in progress */}
       {showCountdown && (
         <CountdownModal onCountdownFinish={handleCountdownFinish} />
       )}
-
       {isModalOpen && (
         <HighScoreModal
           closeModal={() => setIsModalOpen(false)}
@@ -283,7 +268,6 @@ ReactionFetch();
           reactionArray={reactionArray}
         />
       )}
-
     </div>
   );
 };
