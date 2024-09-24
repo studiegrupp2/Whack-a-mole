@@ -3,15 +3,21 @@
 import React, { useState, useEffect } from "react";
 import HighScoreModal from "./HighScoreModal";
 import FetchData from "@/app/api/fetchData";
+import ReactionFetch from "@/app/api/reactionData";
 
 interface HighScore {
   name: string;
   score: number;
 }
 
+interface ReactionProp {
+  name: string;
+  reactionTime: number;
+}
+
 const HighScoreModalButton: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-
+  const [reactionArray, setReactionArray] = useState<ReactionProp[]>([]);
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +26,11 @@ const HighScoreModalButton: React.FC = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const scores = await FetchData();
+
+        const [scores, reaction]: [HighScore[], ReactionProp[]] = await Promise.all([
+          FetchData(),
+          ReactionFetch()
+        ]);
 
         // kollar top10 i listan
         const top10players = scores
@@ -28,6 +38,11 @@ const HighScoreModalButton: React.FC = () => {
           .slice(0, 10);
         //returnerar top10 in i highscoreModalen
         setHighScoreArray(top10players);
+
+        const top10reactionplayers = reaction
+        .sort((a, b) => b.reactionTime - a.reactionTime)
+        .slice(0, 10);
+        setReactionArray(top10reactionplayers);
 
         setError(null);
         console.log(top10players, isLoading, error);
@@ -38,7 +53,6 @@ const HighScoreModalButton: React.FC = () => {
         setIsLoading(false);
       }
     };
-
     getData();
   }, []);
   const openModal = () => {
@@ -57,6 +71,7 @@ const HighScoreModalButton: React.FC = () => {
         <HighScoreModal
           closeModal={() => setIsModalOpen(false)}
           highScoreArray={highScoreArray}
+          reactionArray={reactionArray}
         />
       )}
     </div>
