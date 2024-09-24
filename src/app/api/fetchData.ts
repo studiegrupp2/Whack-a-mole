@@ -7,7 +7,6 @@ interface HighScore {
 
 export default async function FetchData(): Promise<HighScore[]> {
   try {
-    // Fetch all scores
     const result = await sql`SELECT * FROM HighScore ORDER BY score DESC`;
     console.log("All scores:", result.rows);
 

@@ -12,6 +12,8 @@ import ReactionFetch  from "../api/reactionData";
 // import { useRouter } from "next/navigation";
 import CustomCursor from "@/components/CustomCursor";
 import { useRouter } from "next/navigation";
+import EasterEggButton from "@/components/Eastereggbutton";
+
 
 
 interface HighScore {
@@ -245,7 +247,7 @@ ReactionFetch();
           <div className="game-points text-4xl font-extrabold">
             <div className="">{currentPoints} points</div>
           </div>
-          <p>{userName}</p>
+          <p className="text-4xl font-extrabold ">Player: <u>{userName}</u></p>
           <div className="game-start">
             <StartButton
               btnText="Start a New Game"
@@ -261,6 +263,13 @@ ReactionFetch();
             <Board moleHit={moleHit} gameBoard={board} />
           </div>
         </div>
+
+
+        <div className="flex flex-row justify-self-start w-full ">
+        <EasterEggButton   />
+
+        </div>
+
       </div>
       {/* Show countdown modal if countdown is in progress */}
       {showCountdown && (
@@ -274,6 +283,7 @@ ReactionFetch();
           reactionArray={reactionArray}
         />
       )}
+
     </div>
   );
 };

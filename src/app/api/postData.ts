@@ -9,9 +9,7 @@ export default async function PostData(
   currentPoints: number,
   reactionTime: number
 ) {
-  console.log("All environment variables:", process.env);
-  console.log("POSTGRES_URL:", process.env.POSTGRES_URL);
-
+  
   try {
     // Insert the new score
     await sql`INSERT INTO HighScore (name, score) VALUES (${userName}, ${currentPoints})`;
