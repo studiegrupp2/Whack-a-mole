@@ -1,4 +1,5 @@
 import FetchData from "@/app/api/fetchData";
+import ReactionFetch from "@/app/api/reactionData";
 import React from "react";
 import { useEffect } from "react";
 
@@ -6,14 +7,24 @@ interface HighScore {
   name: string;
   score: number;
 }
+interface ReactionProp {
+  name: string;
+  reactionTime: number;
+}
 
 interface Props {
   closeModal: () => void;
   highScoreArray: HighScore[];
+  reactionArray: ReactionProp[];
 }
-const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
+const HighScoreModal: React.FC<Props> = ({
+  closeModal,
+  highScoreArray,
+  reactionArray,
+}) => {
   useEffect(() => {
     FetchData();
+    ReactionFetch();
   }, []);
 
   return (
@@ -55,8 +66,16 @@ const HighScoreModal: React.FC<Props> = ({ closeModal, highScoreArray }) => {
                 Honorable Reward - fastest reaction time
               </h2>
               <div className="flex items-center justify-between">
-                <p>Isak</p>
-                <p>2.84 sekunder</p>
+                <ul>
+                  {reactionArray.map((player) => (
+                    <li key={player.name}>{player.name}</li>
+                  ))}
+                </ul>
+                <ul>
+                  {reactionArray.map((react) => (
+                    <li key={react.reactionTime}>{react.reactionTime} ms</li>
+                  ))}
+                </ul>
               </div>
             </div>
           </div>

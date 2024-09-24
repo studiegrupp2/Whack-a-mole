@@ -24,3 +24,4 @@ export default async function PostData(
     throw error;
   }
 }
+

@@ -7,13 +7,20 @@ import Timer from "@/components/Timer";
 import React, { useCallback, useEffect, useState } from "react";
 import PostData from "../api/postData";
 import FetchData from "../api/fetchData";
+import ReactionFetch  from "../api/reactionData";
+
 // import { useRouter } from "next/navigation";
 import CustomCursor from "@/components/CustomCursor";
 import { useRouter } from "next/navigation";
 
+
 interface HighScore {
   name: string;
   score: number;
+}
+interface ReactionProp {
+  name: string;
+  reactionTime: number;
 }
 
 export interface MoleState {
@@ -28,11 +35,11 @@ const Game = () => {
   const [gameFinished, setGameFinished] = useState<boolean>(false);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [highScoreArray, setHighScoreArray] = useState<HighScore[]>([]);
+  const [reactionArray, setReactionArray] = useState<ReactionProp[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
   const [userName, setUserName] = useState<string>("Anonym");
-
   const [fastestReactionTime, setFastestReactionTime] = useState<number | null>(
     null
   );
@@ -40,13 +47,23 @@ const Game = () => {
   type Board = MoleState[];
   const [board, setBoard] = useState<Board>(new Array(25).fill({ type: null }));
 
+  function Bonk(){
+    new Audio('../bonk.mp3').play()
+  }
+  function Finish(){
+    new Audio('../finishSound.mp3').play()
+  }
+  function Start(){
+    new Audio('../startSound.mp3').play()
+  }
+
+
   // kolla så att användarnamnet ej är null och hämta användarnamnet
   useEffect(() => {
     const storedName = localStorage.getItem("userName");
     if (storedName) {
       setUserName(storedName);
     }
-
     if (!storedName) {
       router.push("/");
     }
@@ -56,7 +73,11 @@ const Game = () => {
     const getData = async () => {
       try {
         setIsLoading(true);
-        const scores = await FetchData();
+
+        const [scores, reaction]: [HighScore[], ReactionProp[]] = await Promise.all([
+          FetchData(),
+          ReactionFetch()
+        ]);
 
         // kollar top10 i listan
         const top10players = scores
@@ -64,6 +85,11 @@ const Game = () => {
           .slice(0, 10);
         //returnerar top10 in i highscoreModalen
         setHighScoreArray(top10players);
+
+        const top10reactionplayers = reaction
+        .sort((a, b) => b.reactionTime - a.reactionTime)
+        .slice(0, 10);
+        setReactionArray(top10reactionplayers);
 
         setError(null);
         console.log(top10players, isLoading, error);
@@ -74,11 +100,11 @@ const Game = () => {
         setIsLoading(false);
       }
     };
-
     getData();
   }, [gameFinished]);
 
   //funktion för att få poäng samt uppdatera board[holeid] från mole till träffad mole
+ReactionFetch();
   const moleHit = useCallback(
     (holeId: number, type: string | null) => {
       if (type !== "mole") return;
@@ -96,18 +122,15 @@ const Game = () => {
             reactionTime < fastestReactionTime
           ) {
             setFastestReactionTime(reactionTime);
-            console.log(`New fastest reaction time: ${reactionTime}ms`);
           }
-
-          console.log(`Reaction time: ${reactionTime}ms`);
-          console.log(fastestReactionTime);
         }
 
         newBoard[holeId] = { type: "hit" };
         return newBoard;
       });
-
+      
       setCurrentPoints((prevPoints) => prevPoints + 1);
+      Bonk()
     },
     [fastestReactionTime]
   );
@@ -173,6 +196,7 @@ const Game = () => {
       setCurrentPoints(0);
       setGameFinished(false);
       setFastestReactionTime(null);
+      Start()
     }
   };
   const handleCountdownFinish = () => {
@@ -197,8 +221,10 @@ const Game = () => {
   const handleGameTimerFinish = () => {
     setIsGameOnGoing(false);
     setGameFinished(true);
-    console.log(userName, currentPoints);
-    PostData(userName, currentPoints, fastestReactionTime);
+    if(fastestReactionTime){
+      PostData(userName, currentPoints, fastestReactionTime);
+    }
+    Finish()
   };
 
   return (
@@ -245,6 +271,7 @@ const Game = () => {
         <HighScoreModal
           closeModal={() => setIsModalOpen(false)}
           highScoreArray={highScoreArray}
+          reactionArray={reactionArray}
         />
       )}
     </div>
